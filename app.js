@@ -13,30 +13,25 @@
 // function displayRecipe(recipe) {
 //   const recipeHTML = `
 //     <div class="recipe">
-//       <h2>${recipe.title}</h2>
-//       <img src="${recipe.image}" alt="${recipe.title}"/>
+//       <div class="recipe-info">
+//         <h2 class="recipe-title">${recipe.title}</h2>
+//         <div class="recipe-buttons">
+//           <button class="save-button">SAVE</button>
+//           <button class="cook-button">COOK</button>
+//         </div>
+//       </div>
+//       <div class="recipe-image">
+//         <img src="${recipe.image}" alt="${recipe.title}" />
+//       </div>
 //     </div>
 //   `;
 //   resultsContainer.insertAdjacentHTML("beforeend", recipeHTML);
 // }
 
-// // function displayRecipes(recipes) {
-// //   resultsContainer.innerHTML = "";
-// //   recipes.forEach((recipe) => displayRecipe(recipe));
-// // }
-
-// function displayRecipe(recipe) {
-//   const recipeHTML = `
-//     <div class="recipe">
-//       <h2>${recipe.title}</h2>
-//       <img src="${recipe.image}" alt="${recipe.title}"/>
-//       <div class="buttons-container">
-//         <button class="save-button">SAVE</button>
-//         <button class="cook-button">COOK</button>
-//       </div>
-//     </div>
-//   `;
-//   resultsContainer.insertAdjacentHTML("beforeend", recipeHTML);
+// function displayRecipes(recipes) {
+//   resultsContainer.innerHTML = "";
+//   const recipesHTML = recipes.map((recipe) => displayRecipe(recipe)).join("");
+//   resultsContainer.insertAdjacentHTML("beforeend", recipesHTML);
 // }
 
 // function getRecipes(query, offset) {
@@ -88,12 +83,12 @@
 //   }
 // });
 
-const toggleThemeButton = document.getElementById("toggle-theme-button");
+// const toggleThemeButton = document.getElementById("toggle-theme-button");
 const body = document.querySelector("body");
 
-toggleThemeButton.addEventListener("click", function () {
-  body.classList.toggle("dark-theme");
-});
+// toggleThemeButton.addEventListener("click", function () {
+//   body.classList.toggle("dark-theme");
+// });
 
 const searchInput = document.getElementById("search-input");
 const searchButton = document.getElementById("search-button");
@@ -102,14 +97,13 @@ const API_KEY = "95cbf9cc98694dd593c38c4fb5b49865";
 
 function displayRecipe(recipe) {
   const recipeHTML = `
-    <div class="recipe">
+    <div class="recipe ${
+      body.classList.contains("dark-theme") ? "dark-theme" : ""
+    }">
       <h2>${recipe.title}</h2>
       <div class="recipe-image">
         <img src="${recipe.image}" alt="${recipe.title}" />
-        <div class="recipe-buttons">
-          <button class="save-button">SAVE</button>
-          <button class="cook-button">COOK</button>
-        </div>
+        <button class="btn btn-primary show-recipe-button">Show Recipe</button>
       </div>
     </div>
   `;
