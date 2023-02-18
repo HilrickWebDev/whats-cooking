@@ -3,7 +3,7 @@
 // const searchInput = document.getElementById("search-input");
 // const searchButton = document.getElementById("search-button");
 // const resultsContainer = document.getElementById("results");
-// const showMoreButton = document.createElement("button");
+// const showMoreButton = document.getElementById("show-more-button");
 // const API_KEY = "95cbf9cc98694dd593c38c4fb5b49865";
 // let offset = 0;
 
@@ -23,10 +23,12 @@
 // }
 
 // function displayRecipes(recipes) {
+//   resultsContainer.innerHTML = "";
 //   recipes.forEach((recipe) => displayRecipe(recipe));
+//   showMoreButton.style.display = "block";
 // }
 
-// function getRecipes(query, numRecipes, offset) {
+// function getRecipes(query) {
 //   const options = {
 //     method: "GET",
 //     url: "https://api.spoonacular.com/recipes/complexSearch",
@@ -34,7 +36,7 @@
 //       apiKey: API_KEY,
 //       query: query,
 //       addRecipeInformation: true,
-//       number: numRecipes,
+//       number: 10,
 //       offset: offset,
 //     },
 //   };
@@ -43,11 +45,6 @@
 //     .then(function (response) {
 //       const recipes = response.data.results;
 //       displayRecipes(recipes);
-//       if (recipes.length < numRecipes) {
-//         showMoreButton.style.display = "none";
-//       } else {
-//         showMoreButton.style.display = "block";
-//       }
 //     })
 //     .catch(function (error) {
 //       console.error(error);
@@ -56,29 +53,18 @@
 
 // searchButton.addEventListener("click", function (event) {
 //   event.preventDefault();
-//   resultsContainer.innerHTML = "";
 //   const query = searchInput.value;
 //   offset = 0;
-//   getRecipes(query, 10, offset);
+//   getRecipes(query);
 // });
 
 // searchInput.addEventListener("keyup", function (event) {
 //   if (event.keyCode === 13) {
 //     event.preventDefault();
-//     resultsContainer.innerHTML = "";
 //     const query = searchInput.value;
 //     offset = 0;
-//     getRecipes(query, 10, offset);
+//     getRecipes(query);
 //   }
-// });
-
-// showMoreButton.classList.add("btn", "btn-primary");
-// showMoreButton.innerText = "Show More";
-// showMoreButton.addEventListener("click", function (event) {
-//   event.preventDefault();
-//   const query = searchInput.value;
-//   offset += 10;
-//   getRecipes(query, 10, offset);
 // });
 
 // window.addEventListener("scroll", function () {
@@ -88,21 +74,23 @@
 //   const maxScroll = documentSize - windowSize;
 //   if (scrollPosition >= maxScroll) {
 //     const query = searchInput.value;
-//     offset += 10;
-//     getRecipes(query, 10, offset);
+//     offset = resultsContainer.children.length;
+//     getRecipes(query);
 //   }
 // });
 
-// resultsContainer.after(showMoreButton);
+// showMoreButton.addEventListener("click", function () {
+//   const query = searchInput.value;
+//   offset = resultsContainer.children.length;
+//   getRecipes(query);
+// });
 
 const body = document.querySelector("body");
-
 const searchInput = document.getElementById("search-input");
 const searchButton = document.getElementById("search-button");
 const resultsContainer = document.getElementById("results");
 const showMoreButton = document.getElementById("show-more-button");
 const API_KEY = "95cbf9cc98694dd593c38c4fb5b49865";
-let currentOffset = 0;
 
 function displayRecipe(recipe) {
   const recipeHTML = `
@@ -112,7 +100,9 @@ function displayRecipe(recipe) {
       <h2>${recipe.title}</h2>
       <div class="recipe-image">
         <img src="${recipe.image}" alt="${recipe.title}" />
-        <button class="btn btn-primary show-recipe-button">Show Recipe</button>
+        <a href="${
+          recipe.sourceUrl
+        }" target="_blank" class="btn btn-primary show-recipe-button">Show Recipe</a>
       </div>
     </div>
   `;
@@ -122,7 +112,14 @@ function displayRecipe(recipe) {
 function displayRecipes(recipes) {
   resultsContainer.innerHTML = "";
   recipes.forEach((recipe) => displayRecipe(recipe));
-  showMoreButton.style.display = "block";
+  if (recipes.length === 0) {
+    resultsContainer.innerHTML = `
+      <div class="text-center mt-5">
+        <h1 class="text-danger">Slow down, ${getRandomChefName()}!</h1>
+      </div>
+    `;
+  }
+  showMoreButton.style.display = recipes.length === 0 ? "none" : "block";
 }
 
 function getRecipes(query, offset) {
@@ -148,6 +145,12 @@ function getRecipes(query, offset) {
     });
 }
 
+function getRandomChefName() {
+  const chefs = ["Gordon Ramsay", "Jamie Oliver", "You Pothead"];
+  const randomIndex = Math.floor(Math.random() * chefs.length);
+  return chefs[randomIndex];
+}
+
 searchButton.addEventListener("click", function (event) {
   event.preventDefault();
   const query = searchInput.value;
@@ -163,10 +166,9 @@ searchInput.addEventListener("keyup", function (event) {
 });
 
 showMoreButton.addEventListener("click", function (event) {
-  event.preventDefault();
   const query = searchInput.value;
-  currentOffset += 10;
-  getRecipes(query, currentOffset);
+  const offset = resultsContainer.children.length;
+  getRecipes(query, offset);
 });
 
 window.addEventListener("scroll", function () {
@@ -174,9 +176,9 @@ window.addEventListener("scroll", function () {
   const windowSize = window.innerHeight;
   const documentSize = document.documentElement.offsetHeight;
   const maxScroll = documentSize - windowSize;
-  if (scrollPosition >= maxScroll && showMoreButton.style.display !== "none") {
+  if (scrollPosition >= maxScroll) {
     const query = searchInput.value;
-    currentOffset += 10;
-    getRecipes(query, currentOffset);
+    const offset = resultsContainer.children.length;
+    getRecipes(query, offset);
   }
 });
