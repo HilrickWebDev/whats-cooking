@@ -1,37 +1,63 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
   <head>
-    <meta charset="utf-8" />
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Recipe Finder</title>
-    <link rel="stylesheet" href="styles.css" />
     <link
       rel="stylesheet"
       href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css"
     />
+    <link rel="stylesheet" href="styles.css" />
   </head>
   <body>
-    <h1 class="text-center mt-5">Recipe Finder</h1>
-    <form class="form-inline d-flex justify-content-center mt-5">
-      <input
-        type="text"
-        class="form-control mr-3"
-        id="search-input"
-        placeholder="Enter ingredients separated by commas"
-      />
-      <button class="btn btn-primary" id="search-button">Make Me Cook</button>
-    </form>
-    <div
-      id="recipes-container"
-      class="d-flex justify-content-center mt-5 flex-wrap"
-    ></div>
-    <div
-      id="results"
-      class="d-flex justify-content-center mt-5 flex-wrap"
-    ></div>
+    <div class="container">
+      <div class="row">
+        <div class="col-12 text-center mt-5">
+          <h1>Recipe Finder</h1>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-12 mt-5">
+          <form class="form-inline d-flex justify-content-center">
+            <div class="form-group w-100">
+              <input
+                type="text"
+                class="form-control w-100"
+                id="search-input"
+                placeholder="Enter ingredients separated by commas"
+              />
+            </div>
+            <button
+              type="submit"
+              class="btn btn-primary mt-3 w-100"
+              id="search-button"
+            >
+              Make Me Cook
+            </button>
+          </form>
+        </div>
+      </div>
+      <div class="row mt-5">
+        <div class="col-12">
+          <div
+            id="recipes-container"
+            class="d-flex justify-content-center flex-wrap"
+          ></div>
+        </div>
+        <div class="col-12">
+          <div
+            id="results"
+            class="d-flex justify-content-center flex-wrap"
+          ></div>
+        </div>
+      </div>
+    </div>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
     <script src="app.js"></script>
+    <script src="showRecipe.js"></script>
   </body>
 </html>
